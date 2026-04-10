@@ -50,6 +50,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent)
       },
       {
+        path: 'garage',
+        canActivate: [authGuard],
+        loadComponent: () => import('./features/garage/garage.component').then(m => m.GarageComponent)
+      },
+      {
         path: 'orders',
         canActivate: [clientGuard],
         loadComponent: () => import('./features/orders/order-list/order-list.component').then(m => m.OrderListComponent)

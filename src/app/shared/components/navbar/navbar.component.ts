@@ -37,6 +37,13 @@ import { CartService } from '../../../core/services/cart.service';
                       hover:bg-primary-800 transition-all duration-200">
               Parts
             </a>
+            @if (auth.loggedIn()) {
+              <a routerLink="/garage" routerLinkActive="text-accent bg-accent/10"
+                 class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
+                        hover:bg-primary-800 transition-all duration-200">
+                My Garage
+              </a>
+            }
             @if (auth.isClient()) {
               <a routerLink="/orders" routerLinkActive="text-accent bg-accent/10"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
@@ -152,6 +159,12 @@ import { CartService } from '../../../core/services/cart.service';
                class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
               Parts
             </a>
+            @if (auth.loggedIn()) {
+              <a routerLink="/garage" (click)="toggleMobileMenu()"
+                 class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
+                My Garage
+              </a>
+            }
             @if (auth.isClient()) {
               <a routerLink="/orders" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">

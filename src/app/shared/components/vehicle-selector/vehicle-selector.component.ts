@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, signal, computed, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VehicleService } from '../../../core/services/vehicle.service';
@@ -110,10 +110,16 @@ export interface VehicleSelection {
     </div>
   `
 })
-export class VehicleSelectorComponent implements OnInit {
+export class VehicleSelectorComponent implements OnInit, OnChanges {
   @Input() layout: 'horizontal' | 'vertical' = 'horizontal';
   @Input() showEngine = true;
+  @Input() initialBrandId?: number;
+  @Input() initialModelId?: number;
+  @Input() initialYearId?: number;
+  @Input() initialEngineId?: number;
   @Output() selectionChange = new EventEmitter<VehicleSelection>();
+
+  private initialized = false;
 
   brands = signal<Brand[]>([]);
   models = signal<VehicleModel[]>([]);
@@ -138,10 +144,63 @@ export class VehicleSelectorComponent implements OnInit {
     this.loadBrands();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.initialized) return;
+    if (changes['initialBrandId'] && this.initialBrandId && this.brands().length > 0) {
+      this.restoreInitialValues();
+    }
+  }
+
+  private restoreInitialValues(): void {
+    if (!this.initialBrandId || this.initialized) return;
+    this.initialized = true;
+    this.selectedBrandId.set(this.initialBrandId);
+    this.loadingModels.set(true);
+    this.vehicleService.getModels(this.initialBrandId).subscribe({
+      next: (res) => {
+        this.models.set(res.results);
+        this.loadingModels.set(false);
+        if (this.initialModelId) {
+          this.selectedModelId.set(this.initialModelId);
+          this.loadingYears.set(true);
+          this.vehicleService.getModelYears(this.initialModelId).subscribe({
+            next: (res2) => {
+              this.years.set(res2.results);
+              this.loadingYears.set(false);
+              if (this.initialYearId) {
+                this.selectedYearId.set(this.initialYearId);
+                this.loadingEngines.set(true);
+                this.vehicleService.getEngines(this.initialYearId).subscribe({
+                  next: (res3) => {
+                    this.engines.set(res3.results);
+                    this.loadingEngines.set(false);
+                    if (this.initialEngineId) {
+                      this.selectedEngineId.set(this.initialEngineId);
+                    }
+                    this.emitSelection();
+                  },
+                  error: () => this.loadingEngines.set(false)
+                });
+              } else { this.emitSelection(); }
+            },
+            error: () => this.loadingYears.set(false)
+          });
+        } else { this.emitSelection(); }
+      },
+      error: () => this.loadingModels.set(false)
+    });
+  }
+
   private loadBrands(): void {
     this.loadingBrands.set(true);
     this.vehicleService.getBrands().subscribe({
-      next: (res) => { this.brands.set(res.results); this.loadingBrands.set(false); },
+      next: (res) => {
+        this.brands.set(res.results);
+        this.loadingBrands.set(false);
+        if (this.initialBrandId && !this.initialized) {
+          this.restoreInitialValues();
+        }
+      },
       error: () => this.loadingBrands.set(false)
     });
   }
