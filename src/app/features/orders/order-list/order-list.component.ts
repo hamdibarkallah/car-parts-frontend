@@ -77,8 +77,8 @@ export class OrderListComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderService.getOrders().subscribe({
-      next: (res) => {
-        this.orders.set(res.results);
+      next: (orders) => {
+        this.orders.set(orders);
         this.loading.set(false);
       },
       error: () => this.loading.set(false)

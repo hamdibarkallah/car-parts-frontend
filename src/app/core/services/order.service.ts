@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Order, OrderListItem } from '../models/order.model';
-import { PaginatedResponse } from '../models/api.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -11,8 +10,8 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  getOrders(): Observable<PaginatedResponse<OrderListItem>> {
-    return this.http.get<PaginatedResponse<OrderListItem>>(`${this.apiUrl}/orders/`);
+  getOrders(): Observable<OrderListItem[]> {
+    return this.http.get<OrderListItem[]>(`${this.apiUrl}/orders/`);
   }
 
   getOrder(id: number): Observable<Order> {
