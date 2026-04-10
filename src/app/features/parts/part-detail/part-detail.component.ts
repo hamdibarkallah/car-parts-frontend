@@ -103,8 +103,8 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
               <span [class]="part()!.condition === 'NEW' ? 'badge-new' : 'badge-used'">
                 {{ part()!.condition }}
               </span>
-              <span [class]="part()!.in_stock ? 'badge-in-stock' : 'badge-out-of-stock'">
-                {{ part()!.in_stock ? 'In Stock (' + part()!.available_quantity + ')' : 'Out of Stock' }}
+              <span [class]="part()!.is_in_stock ? 'badge-in-stock' : 'badge-out-of-stock'">
+                {{ part()!.is_in_stock ? 'In Stock (' + part()!.available_quantity + ')' : 'Out of Stock' }}
               </span>
             </div>
 
@@ -121,7 +121,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
             </div>
 
             <!-- Add to Cart -->
-            @if (auth.isClient() && part()!.in_stock) {
+            @if (auth.isClient() && part()!.is_in_stock) {
               <div class="flex items-center gap-4">
                 <div class="flex items-center border border-primary-600 rounded-lg">
                   <button (click)="decrementQty()" class="px-3 py-2 text-primary-300 hover:text-primary-50 hover:bg-primary-700 rounded-l-lg transition-colors">

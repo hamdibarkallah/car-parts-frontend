@@ -103,7 +103,7 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
                       <span class="font-bold text-accent font-mono">{{ part.price }} TND</span>
                     </td>
                     <td class="px-4 py-3 hidden md:table-cell">
-                      <span [class]="part.in_stock ? 'text-success' : 'text-danger'" class="font-medium">
+                      <span [class]="part.is_in_stock ? 'text-success' : 'text-danger'" class="font-medium">
                         {{ part.quantity }}
                       </span>
                     </td>

@@ -256,12 +256,12 @@ export class PartFormComponent implements OnInit {
           price: part.price,
           quantity: part.quantity,
           condition: part.condition,
-          category: part.category
+          category: part.category?.id
         });
-        this.vehicleBrandId = part.brand;
-        this.vehicleModelId = part.model;
-        this.vehicleYearId = part.model_year;
-        this.vehicleEngineId = part.engine || null;
+        this.vehicleBrandId = part.brand?.id || null;
+        this.vehicleModelId = part.model?.id || null;
+        this.vehicleYearId = part.model_year?.id || null;
+        this.vehicleEngineId = part.engine?.id || null;
 
         if (part.images && part.images.length > 0) {
           this.existingImages.set(part.images);

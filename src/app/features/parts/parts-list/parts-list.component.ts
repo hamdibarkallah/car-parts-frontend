@@ -200,8 +200,8 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
                       <span [class]="part.condition === 'NEW' ? 'badge-new' : 'badge-used'">
                         {{ part.condition }}
                       </span>
-                      <span [class]="part.in_stock ? 'badge-in-stock' : 'badge-out-of-stock'">
-                        {{ part.in_stock ? 'In Stock' : 'Out of Stock' }}
+                      <span [class]="part.is_in_stock ? 'badge-in-stock' : 'badge-out-of-stock'">
+                        {{ part.is_in_stock ? 'In Stock' : 'Out of Stock' }}
                       </span>
                     </div>
 

@@ -103,8 +103,8 @@ import { Part } from '../../../core/models/part.model';
                   <p class="text-xs text-primary-400 font-mono mt-0.5">{{ part.reference }}</p>
                   <div class="flex items-center gap-2 mt-1">
                     <span class="text-sm font-bold text-accent font-mono">{{ part.price }} TND</span>
-                    <span [class]="part.in_stock ? 'badge-in-stock' : 'badge-out-of-stock'" class="text-[10px]">
-                      {{ part.in_stock ? 'In Stock' : 'Out' }}
+                    <span [class]="part.is_in_stock ? 'badge-in-stock' : 'badge-out-of-stock'" class="text-[10px]">
+                      {{ part.is_in_stock ? 'In Stock' : 'Out' }}
                     </span>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ export class DashboardComponent implements OnInit {
         next: (res) => {
           this.totalParts.set(res.count);
           this.recentParts.set(res.results.slice(0, 6));
-          const inStock = res.results.filter(p => p.in_stock).length;
+          const inStock = res.results.filter(p => p.is_in_stock).length;
           this.inStockCount.set(inStock);
           this.outOfStockCount.set(res.results.length - inStock);
         }
