@@ -1,11 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PartsService } from '../../../core/services/parts.service';
 import { CartService } from '../../../core/services/cart.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { Part } from '../../../core/models/part.model';
+import { Part, PartImage } from '../../../core/models/part.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
@@ -35,15 +35,17 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
           <span>/</span>
           <a routerLink="/parts" class="hover:text-accent transition-colors">Parts</a>
           <span>/</span>
-          <span class="text-primary-200">{{ part()!.name }}</span>
+          <span class="text-primary-200 line-clamp-1">{{ part()!.name }}</span>
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <!-- Image Section -->
-          <div>
-            <div class="aspect-square rounded-xl bg-primary-800 border border-primary-700 overflow-hidden flex items-center justify-center">
-              @if (part()!.primary_image) {
-                <img [src]="part()!.primary_image" [alt]="part()!.name" class="w-full h-full object-contain" />
+          <!-- Image Gallery -->
+          <div class="space-y-3">
+            <!-- Main Image -->
+            <div class="aspect-square rounded-xl bg-primary-800 border border-primary-700 overflow-hidden flex items-center justify-center relative">
+              @if (currentImage()) {
+                <img [src]="currentImage()" [alt]="part()!.name"
+                     class="w-full h-full object-contain transition-opacity duration-200" />
               } @else {
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-primary-600" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -51,7 +53,47 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
                   <circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
                 </svg>
               }
+              <!-- Image counter -->
+              @if (allImages().length > 1) {
+                <div class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs text-white font-medium">
+                  {{ selectedImageIndex() + 1 }} / {{ allImages().length }}
+                </div>
+              }
+              <!-- Nav arrows -->
+              @if (allImages().length > 1) {
+                <button (click)="prevImage()"
+                        class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm
+                               flex items-center justify-center text-white hover:bg-black/60 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6"/>
+                  </svg>
+                </button>
+                <button (click)="nextImage()"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm
+                               flex items-center justify-center text-white hover:bg-black/60 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6"/>
+                  </svg>
+                </button>
+              }
             </div>
+            <!-- Thumbnails -->
+            @if (allImages().length > 1) {
+              <div class="flex gap-2 overflow-x-auto pb-1">
+                @for (img of allImages(); track img.id; let i = $index) {
+                  <button (click)="selectedImageIndex.set(i)"
+                          class="w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 transition-all"
+                          [class]="i === selectedImageIndex()
+                            ? 'border-accent shadow-lg shadow-accent/20'
+                            : 'border-primary-700 hover:border-primary-500 opacity-60 hover:opacity-100'">
+                    <img [src]="img.image_url || img.image" [alt]="'Image ' + (i + 1)"
+                         class="w-full h-full object-cover" />
+                  </button>
+                }
+              </div>
+            }
           </div>
 
           <!-- Info Section -->
@@ -132,7 +174,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
             @if (part()!.description) {
               <div>
                 <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-2">Description</h3>
-                <p class="text-sm text-primary-300 leading-relaxed">{{ part()!.description }}</p>
+                <p class="text-sm text-primary-300 leading-relaxed whitespace-pre-line">{{ part()!.description }}</p>
               </div>
             }
           </div>
@@ -143,9 +185,20 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 })
 export class PartDetailComponent implements OnInit {
   part = signal<Part | null>(null);
+  allImages = signal<PartImage[]>([]);
   loading = signal(true);
   quantity = signal(1);
   addingToCart = signal(false);
+  selectedImageIndex = signal(0);
+
+  currentImage = computed(() => {
+    const images = this.allImages();
+    const idx = this.selectedImageIndex();
+    if (images.length > 0 && idx < images.length) {
+      return images[idx].image_url || images[idx].image;
+    }
+    return this.part()?.primary_image || null;
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -158,9 +211,38 @@ export class PartDetailComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.partsService.getPart(id).subscribe({
-      next: (part) => { this.part.set(part); this.loading.set(false); },
-      error: () => { this.loading.set(false); }
+      next: (part) => {
+        this.part.set(part);
+        this.loading.set(false);
+        if (part.images && part.images.length > 0) {
+          this.allImages.set(part.images);
+        }
+        this.loadImages(id);
+      },
+      error: () => this.loading.set(false)
     });
+  }
+
+  private loadImages(partId: number): void {
+    this.partsService.getPartImages(partId).subscribe({
+      next: (images) => {
+        if (images && images.length > 0) {
+          this.allImages.set(images);
+        }
+      }
+    });
+  }
+
+  prevImage(): void {
+    const len = this.allImages().length;
+    if (len <= 1) return;
+    this.selectedImageIndex.set((this.selectedImageIndex() - 1 + len) % len);
+  }
+
+  nextImage(): void {
+    const len = this.allImages().length;
+    if (len <= 1) return;
+    this.selectedImageIndex.set((this.selectedImageIndex() + 1) % len);
   }
 
   incrementQty(): void {

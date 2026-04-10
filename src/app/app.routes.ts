@@ -45,6 +45,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/cart/cart.component').then(m => m.CartComponent)
       },
       {
+        path: 'checkout',
+        canActivate: [clientGuard],
+        loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent)
+      },
+      {
         path: 'orders',
         canActivate: [clientGuard],
         loadComponent: () => import('./features/orders/order-list/order-list.component').then(m => m.OrderListComponent)
@@ -58,6 +63,26 @@ export const routes: Routes = [
         path: 'supplier',
         canActivate: [supplierGuard],
         loadComponent: () => import('./features/supplier/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'supplier/parts',
+        canActivate: [supplierGuard],
+        loadComponent: () => import('./features/supplier/my-parts/my-parts.component').then(m => m.MyPartsComponent)
+      },
+      {
+        path: 'supplier/parts/new',
+        canActivate: [supplierGuard],
+        loadComponent: () => import('./features/supplier/part-form/part-form.component').then(m => m.PartFormComponent)
+      },
+      {
+        path: 'supplier/parts/:id/edit',
+        canActivate: [supplierGuard],
+        loadComponent: () => import('./features/supplier/part-form/part-form.component').then(m => m.PartFormComponent)
+      },
+      {
+        path: 'supplier/orders',
+        canActivate: [supplierGuard],
+        loadComponent: () => import('./features/supplier/supplier-orders/supplier-orders.component').then(m => m.SupplierOrdersComponent)
       }
     ]
   },

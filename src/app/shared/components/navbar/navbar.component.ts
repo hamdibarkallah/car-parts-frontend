@@ -46,9 +46,21 @@ import { CartService } from '../../../core/services/cart.service';
             }
             @if (auth.isSupplier()) {
               <a routerLink="/supplier" routerLinkActive="text-accent bg-accent/10"
+                 [routerLinkActiveOptions]="{exact: true}"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                         hover:bg-primary-800 transition-all duration-200">
                 Dashboard
+              </a>
+              <a routerLink="/supplier/parts" routerLinkActive="text-accent bg-accent/10"
+                 [routerLinkActiveOptions]="{exact: true}"
+                 class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
+                        hover:bg-primary-800 transition-all duration-200">
+                My Parts
+              </a>
+              <a routerLink="/supplier/orders" routerLinkActive="text-accent bg-accent/10"
+                 class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
+                        hover:bg-primary-800 transition-all duration-200">
+                Orders
               </a>
             }
           </div>
@@ -150,6 +162,14 @@ import { CartService } from '../../../core/services/cart.service';
               <a routerLink="/supplier" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
                 Dashboard
+              </a>
+              <a routerLink="/supplier/parts" (click)="toggleMobileMenu()"
+                 class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
+                My Parts
+              </a>
+              <a routerLink="/supplier/orders" (click)="toggleMobileMenu()"
+                 class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
+                Orders
               </a>
             }
           </div>

@@ -1,8 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
-import { OrderService } from '../../core/services/order.service';
 import { ToastService } from '../../core/services/toast.service';
 import { Cart, CartItem } from '../../core/models/cart.model';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
@@ -119,14 +118,9 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
                 </div>
               </div>
 
-              <button (click)="placeOrder()" [disabled]="placingOrder()" class="btn-primary w-full py-3">
-                @if (placingOrder()) {
-                  <app-loading-spinner size="sm" />
-                  <span>Placing Order...</span>
-                } @else {
-                  Place Order
-                }
-              </button>
+              <a routerLink="/checkout" class="btn-primary w-full py-3 text-center block">
+                Proceed to Checkout
+              </a>
 
               <a routerLink="/parts" class="btn-ghost w-full text-center text-sm block">
                 Continue Shopping
@@ -140,13 +134,10 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
 })
 export class CartComponent implements OnInit {
   loading = signal(true);
-  placingOrder = signal(false);
 
   constructor(
     public cartService: CartService,
-    private orderService: OrderService,
-    private toast: ToastService,
-    private router: Router
+    private toast: ToastService
   ) {}
 
   get cart() { return this.cartService.cart; }
@@ -161,7 +152,7 @@ export class CartComponent implements OnInit {
   updateQuantity(item: CartItem, newQty: number): void {
     if (newQty < 1) return;
     this.cartService.updateItem(item.id, newQty).subscribe({
-      error: (err) => this.toast.error(err.error?.error || 'Failed to update quantity')
+      error: (err: any) => this.toast.error(err.error?.error || 'Failed to update quantity')
     });
   }
 
@@ -169,23 +160,6 @@ export class CartComponent implements OnInit {
     this.cartService.removeItem(item.id).subscribe({
       next: () => this.toast.success('Item removed from cart'),
       error: () => this.toast.error('Failed to remove item')
-    });
-  }
-
-  placeOrder(): void {
-    this.placingOrder.set(true);
-    this.orderService.createOrder().subscribe({
-      next: (order) => {
-        this.placingOrder.set(false);
-        this.cartService.loadCart().subscribe();
-        this.toast.success('Order placed successfully!');
-        this.router.navigate(['/orders', order.id]);
-      },
-      error: (err) => {
-        this.placingOrder.set(false);
-        const msg = err.error?.error || err.error?.detail || 'Failed to place order';
-        this.toast.error(msg);
-      }
     });
   }
 }
