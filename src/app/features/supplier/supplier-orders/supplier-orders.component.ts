@@ -5,21 +5,22 @@ import { OrderService } from '../../../core/services/order.service';
 import { OrderListItem } from '../../../core/models/order.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-supplier-orders',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent, TranslateModule],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Header -->
       <nav class="flex items-center gap-2 text-sm text-primary-400 mb-2">
-        <a routerLink="/supplier" class="hover:text-accent transition-colors">Dashboard</a>
+        <a routerLink="/supplier" class="hover:text-accent transition-colors">{{ 'NAV.DASHBOARD' | translate }}</a>
         <span>/</span>
-        <span class="text-primary-200">Incoming Orders</span>
+        <span class="text-primary-200">{{ 'SUPPLIER.ORDERS_TITLE' | translate }}</span>
       </nav>
-      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-2">Incoming Orders</h1>
-      <p class="text-sm text-primary-400 mb-8">Orders that contain your parts</p>
+      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-2">{{ 'SUPPLIER.ORDERS_TITLE' | translate }}</h1>
+      <p class="text-sm text-primary-400 mb-8">{{ 'SUPPLIER.ORDERS_TITLE' | translate }}</p>
 
       @if (loading()) {
         <div class="space-y-4">
@@ -34,8 +35,8 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
       } @else if (orders().length === 0) {
         <app-empty-state
           icon="📦"
-          title="No orders yet"
-          description="When customers order your parts, they'll appear here.">
+          [title]="'ORDERS.NO_ORDERS' | translate"
+          [description]="'ORDERS.NO_ORDERS_DESC' | translate">
         </app-empty-state>
       } @else {
         <div class="space-y-4">
@@ -44,7 +45,7 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <div class="flex items-center gap-3">
-                    <h3 class="font-semibold text-primary-100">Order #{{ order.id }}</h3>
+                    <h3 class="font-semibold text-primary-100">{{ 'ORDERS.ORDER' | translate }} #{{ order.id }}</h3>
                     <span class="px-2 py-0.5 rounded-full text-xs font-medium"
                           [ngClass]="getStatusClass(order.status)">
                       {{ order.status }}

@@ -6,21 +6,22 @@ import { OrderService } from '../../core/services/order.service';
 import { ToastService } from '../../core/services/toast.service';
 import { Cart } from '../../core/models/cart.model';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, TranslateModule],
   template: `
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Header -->
       <nav class="flex items-center gap-2 text-sm text-primary-400 mb-6">
-        <a routerLink="/cart" class="hover:text-accent transition-colors">Cart</a>
+        <a routerLink="/cart" class="hover:text-accent transition-colors">{{ 'CART.TITLE' | translate }}</a>
         <span>/</span>
-        <span class="text-primary-200">Checkout</span>
+        <span class="text-primary-200">{{ 'CHECKOUT.TITLE' | translate }}</span>
       </nav>
 
-      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-8">Checkout</h1>
+      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-8">{{ 'CHECKOUT.TITLE' | translate }}</h1>
 
       @if (loading()) {
         <div class="space-y-4">
@@ -32,13 +33,13 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
         </div>
       } @else if (!cart() || cart()!.items.length === 0) {
         <div class="card p-10 text-center">
-          <p class="text-primary-400 mb-4">Your cart is empty</p>
-          <a routerLink="/parts" class="btn-primary inline-flex">Browse Parts</a>
+          <p class="text-primary-400 mb-4">{{ 'CART.EMPTY' | translate }}</p>
+          <a routerLink="/parts" class="btn-primary inline-flex">{{ 'CART.BROWSE' | translate }}</a>
         </div>
       } @else {
         <!-- Order Summary -->
         <div class="card p-6 mb-6">
-          <h2 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-4">Order Summary</h2>
+          <h2 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-4">{{ 'CHECKOUT.ORDER_SUMMARY' | translate }}</h2>
 
           <div class="divide-y divide-primary-700">
             @for (item of cart()!.items; track item.id) {
@@ -70,7 +71,7 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
             <span class="text-success text-xs font-medium">Free</span>
           </div>
           <div class="border-t border-primary-700 pt-3 flex items-center justify-between">
-            <span class="text-primary-100 font-semibold">Total</span>
+            <span class="text-primary-100 font-semibold">{{ 'CART.TOTAL' | translate }}</span>
             <span class="text-xl font-bold text-accent font-mono">{{ cart()!.total }} TND</span>
           </div>
         </div>
@@ -80,16 +81,16 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
           <button (click)="placeOrder()" [disabled]="placing()" class="btn-primary flex-1 text-center justify-center">
             @if (placing()) {
               <app-loading-spinner size="sm" />
-              Placing Order...
+              {{ 'CHECKOUT.PLACING' | translate }}
             } @else {
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
               </svg>
-              Confirm & Place Order
+              {{ 'CHECKOUT.CONFIRM' | translate }}
             }
           </button>
-          <a routerLink="/cart" class="btn-ghost text-center">Back to Cart</a>
+          <a routerLink="/cart" class="btn-ghost text-center">{{ 'CHECKOUT.BACK_TO_CART' | translate }}</a>
         </div>
 
         <p class="text-xs text-primary-500 text-center mt-4">
@@ -107,13 +108,13 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
                 <path d="M20 6 9 17l-5-5"/>
               </svg>
             </div>
-            <h2 class="text-xl font-bold text-primary-50 mb-2">Order Placed!</h2>
+            <h2 class="text-xl font-bold text-primary-50 mb-2">{{ 'CHECKOUT.SUCCESS' | translate }}</h2>
             <p class="text-sm text-primary-400 mb-6">
-              Your order has been placed successfully. You can track it in your orders page.
+              {{ 'CHECKOUT.SUCCESS_DESC' | translate }}
             </p>
             <div class="flex gap-3 justify-center">
-              <a routerLink="/orders" class="btn-primary text-sm">View Orders</a>
-              <a routerLink="/parts" class="btn-secondary text-sm">Continue Shopping</a>
+              <a routerLink="/orders" class="btn-primary text-sm">{{ 'CHECKOUT.VIEW_ORDERS' | translate }}</a>
+              <a routerLink="/parts" class="btn-secondary text-sm">{{ 'CHECKOUT.CONTINUE' | translate }}</a>
             </div>
           </div>
         </div>

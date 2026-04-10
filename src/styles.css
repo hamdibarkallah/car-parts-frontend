@@ -9,6 +9,15 @@
     @apply bg-primary-900 text-primary-50 font-sans antialiased;
   }
 
+  /* RTL support for Arabic */
+  [dir="rtl"] {
+    font-family: 'Noto Sans Arabic', 'Inter', system-ui, sans-serif;
+  }
+  [dir="rtl"] .font-mono {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
   ::selection {
     @apply bg-accent/30 text-white;
   }

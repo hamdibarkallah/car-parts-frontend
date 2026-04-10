@@ -5,17 +5,18 @@ import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent, TranslateModule],
   template: `
     <div class="w-full max-w-md animate-fade-in">
       <!-- Header -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-primary-50 tracking-tight">Welcome back</h1>
-        <p class="mt-2 text-primary-400">Sign in to your account</p>
+        <h1 class="text-3xl font-bold text-primary-50 tracking-tight">{{ 'AUTH.LOGIN_TITLE' | translate }}</h1>
+        <p class="mt-2 text-primary-400">{{ 'AUTH.LOGIN_TITLE' | translate }}</p>
       </div>
 
       <!-- Form Card -->
@@ -24,7 +25,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 
           <!-- Username -->
           <div>
-            <label for="username" class="label">Username</label>
+            <label for="username" class="label">{{ 'AUTH.USERNAME' | translate }}</label>
             <input
               id="username"
               type="text"
@@ -40,7 +41,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 
           <!-- Password -->
           <div>
-            <label for="password" class="label">Password</label>
+            <label for="password" class="label">{{ 'AUTH.PASSWORD' | translate }}</label>
             <div class="relative">
               <input
                 id="password"
@@ -86,9 +87,9 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
             class="btn-primary w-full py-3">
             @if (loading()) {
               <app-loading-spinner size="sm" />
-              <span>Signing in...</span>
+              <span>{{ 'AUTH.LOGIN_BTN' | translate }}...</span>
             } @else {
-              <span>Sign In</span>
+              <span>{{ 'AUTH.LOGIN_BTN' | translate }}</span>
             }
           </button>
         </form>
@@ -96,9 +97,9 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
         <!-- Divider -->
         <div class="mt-6 pt-6 border-t border-primary-700 text-center">
           <p class="text-sm text-primary-400">
-            Don't have an account?
+            {{ 'AUTH.NO_ACCOUNT' | translate }}
             <a routerLink="/auth/register" class="text-accent hover:text-accent-400 font-medium transition-colors">
-              Sign up
+              {{ 'NAV.SIGN_UP' | translate }}
             </a>
           </p>
         </div>

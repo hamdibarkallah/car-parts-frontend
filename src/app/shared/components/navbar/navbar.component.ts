@@ -1,13 +1,15 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { CartService } from '../../../core/services/cart.service';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule, LanguageSwitcherComponent],
   template: `
     <nav class="sticky top-0 z-40 bg-primary-900/80 backdrop-blur-xl border-b border-primary-700/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,25 +32,25 @@ import { CartService } from '../../../core/services/cart.service';
                [routerLinkActiveOptions]="{exact: true}"
                class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                       hover:bg-primary-800 transition-all duration-200">
-              Home
+              {{ 'NAV.HOME' | translate }}
             </a>
             <a routerLink="/parts" routerLinkActive="text-accent bg-accent/10"
                class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                       hover:bg-primary-800 transition-all duration-200">
-              Parts
+              {{ 'NAV.PARTS' | translate }}
             </a>
             @if (auth.loggedIn()) {
               <a routerLink="/garage" routerLinkActive="text-accent bg-accent/10"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                         hover:bg-primary-800 transition-all duration-200">
-                My Garage
+                {{ 'NAV.MY_GARAGE' | translate }}
               </a>
             }
             @if (auth.isClient()) {
               <a routerLink="/orders" routerLinkActive="text-accent bg-accent/10"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                         hover:bg-primary-800 transition-all duration-200">
-                Orders
+                {{ 'NAV.ORDERS' | translate }}
               </a>
             }
             @if (auth.isSupplier()) {
@@ -56,24 +58,26 @@ import { CartService } from '../../../core/services/cart.service';
                  [routerLinkActiveOptions]="{exact: true}"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                         hover:bg-primary-800 transition-all duration-200">
-                Dashboard
+                {{ 'NAV.DASHBOARD' | translate }}
               </a>
               <a routerLink="/supplier/parts" routerLinkActive="text-accent bg-accent/10"
                  [routerLinkActiveOptions]="{exact: true}"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                         hover:bg-primary-800 transition-all duration-200">
-                My Parts
+                {{ 'NAV.MY_PARTS' | translate }}
               </a>
               <a routerLink="/supplier/orders" routerLinkActive="text-accent bg-accent/10"
                  class="px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50
                         hover:bg-primary-800 transition-all duration-200">
-                Orders
+                {{ 'NAV.ORDERS' | translate }}
               </a>
             }
           </div>
 
           <!-- Right Side -->
           <div class="flex items-center gap-3">
+            <app-language-switcher />
+
             @if (auth.isClient()) {
               <!-- Cart Button -->
               <a routerLink="/cart"
@@ -121,14 +125,14 @@ import { CartService } from '../../../core/services/cart.service';
                     <button (click)="auth.logout(); toggleUserMenu()"
                             class="w-full text-left px-4 py-2 text-sm text-danger hover:bg-primary-700
                                    transition-colors duration-150">
-                      Sign Out
+                      {{ 'NAV.SIGN_OUT' | translate }}
                     </button>
                   </div>
                 }
               </div>
             } @else {
-              <a routerLink="/auth/login" class="btn-ghost text-sm">Sign In</a>
-              <a routerLink="/auth/register" class="btn-primary text-sm">Sign Up</a>
+              <a routerLink="/auth/login" class="btn-ghost text-sm">{{ 'NAV.SIGN_IN' | translate }}</a>
+              <a routerLink="/auth/register" class="btn-primary text-sm">{{ 'NAV.SIGN_UP' | translate }}</a>
             }
 
             <!-- Mobile Menu Toggle -->
@@ -153,36 +157,36 @@ import { CartService } from '../../../core/services/cart.service';
           <div class="md:hidden border-t border-primary-700/50 py-3 animate-slide-down">
             <a routerLink="/" (click)="toggleMobileMenu()"
                class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-              Home
+              {{ 'NAV.HOME' | translate }}
             </a>
             <a routerLink="/parts" (click)="toggleMobileMenu()"
                class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-              Parts
+              {{ 'NAV.PARTS' | translate }}
             </a>
             @if (auth.loggedIn()) {
               <a routerLink="/garage" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-                My Garage
+                {{ 'NAV.MY_GARAGE' | translate }}
               </a>
             }
             @if (auth.isClient()) {
               <a routerLink="/orders" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-                Orders
+                {{ 'NAV.ORDERS' | translate }}
               </a>
             }
             @if (auth.isSupplier()) {
               <a routerLink="/supplier" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-                Dashboard
+                {{ 'NAV.DASHBOARD' | translate }}
               </a>
               <a routerLink="/supplier/parts" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-                My Parts
+                {{ 'NAV.MY_PARTS' | translate }}
               </a>
               <a routerLink="/supplier/orders" (click)="toggleMobileMenu()"
                  class="block px-3 py-2 rounded-lg text-sm font-medium text-primary-300 hover:text-primary-50 hover:bg-primary-800">
-                Orders
+                {{ 'NAV.ORDERS' | translate }}
               </a>
             }
           </div>

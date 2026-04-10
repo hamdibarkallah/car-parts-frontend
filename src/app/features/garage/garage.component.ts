@@ -8,26 +8,27 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { UserVehicle } from '../../core/models/vehicle.model';
 import { VehicleSelection } from '../../shared/components/vehicle-selector/vehicle-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-garage',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, VehicleSelectorComponent, LoadingSpinnerComponent, EmptyStateComponent],
+  imports: [CommonModule, FormsModule, RouterLink, VehicleSelectorComponent, LoadingSpinnerComponent, EmptyStateComponent, TranslateModule],
   template: `
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">My Garage</h1>
-          <p class="text-primary-400 text-sm mt-1">Save your vehicles for quick part search</p>
+          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">{{ 'GARAGE.TITLE' | translate }}</h1>
+          <p class="text-primary-400 text-sm mt-1">{{ 'GARAGE.SUBTITLE' | translate }}</p>
         </div>
         <button (click)="showForm.set(!showForm())"
                 class="btn-primary flex items-center gap-2">
           @if (showForm()) {
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            Cancel
+            {{ 'GARAGE.CANCEL' | translate }}
           } @else {
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-            Add Vehicle
+            {{ 'GARAGE.ADD_VEHICLE' | translate }}
           }
         </button>
       </div>
@@ -36,12 +37,12 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
       @if (showForm()) {
         <div class="card p-6 mb-8 border border-accent/20">
           <h2 class="text-lg font-semibold text-primary-100 mb-4">
-            {{ editingVehicle() ? 'Edit Vehicle' : 'Add a Vehicle' }}
+            {{ editingVehicle() ? ('GARAGE.EDIT_VEHICLE' | translate) : ('GARAGE.ADD_A_VEHICLE' | translate) }}
           </h2>
 
           <div class="mb-4">
-            <label class="block text-sm font-medium text-primary-300 mb-1">Nickname (optional)</label>
-            <input type="text" [(ngModel)]="nickname" placeholder="e.g. My Daily Driver"
+            <label class="block text-sm font-medium text-primary-300 mb-1">{{ 'GARAGE.NICKNAME_LABEL' | translate }}</label>
+            <input type="text" [(ngModel)]="nickname" [placeholder]="'GARAGE.NICKNAME_PLACEHOLDER' | translate"
                    class="input w-full sm:w-1/2" />
           </div>
 
@@ -56,7 +57,7 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
             <label class="flex items-center gap-2 text-sm text-primary-300 cursor-pointer">
               <input type="checkbox" [(ngModel)]="isDefault"
                      class="w-4 h-4 rounded border-primary-600 bg-primary-800 text-accent focus:ring-accent/50" />
-              Set as default vehicle
+              {{ 'GARAGE.SET_DEFAULT' | translate }}
             </label>
           </div>
 
@@ -68,13 +69,13 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                 </svg>
-                Saving...
+                {{ 'GARAGE.SAVING' | translate }}
               } @else {
-                {{ editingVehicle() ? 'Update' : 'Save Vehicle' }}
+                {{ editingVehicle() ? ('GARAGE.UPDATE' | translate) : ('GARAGE.SAVE' | translate) }}
               }
             </button>
             @if (editingVehicle()) {
-              <button (click)="cancelEdit()" class="btn-secondary">Cancel</button>
+              <button (click)="cancelEdit()" class="btn-secondary">{{ 'GARAGE.CANCEL' | translate }}</button>
             }
           </div>
         </div>
@@ -88,9 +89,9 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
           }
         </div>
       } @else if (vehicles().length === 0 && !showForm()) {
-        <app-empty-state icon="🚗" title="No vehicles saved"
-          description="Add your vehicle to quickly find compatible parts.">
-          <button (click)="showForm.set(true)" class="btn-primary mt-6">Add Your First Vehicle</button>
+        <app-empty-state icon="🚗" [title]="'GARAGE.NO_VEHICLES' | translate"
+          [description]="'GARAGE.NO_VEHICLES_DESC' | translate">
+          <button (click)="showForm.set(true)" class="btn-primary mt-6">{{ 'GARAGE.ADD_FIRST' | translate }}</button>
         </app-empty-state>
       } @else {
         <div class="space-y-4">
@@ -108,7 +109,7 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
                     <span class="font-semibold text-primary-100">{{ vehicle.display_name }}</span>
                     @if (vehicle.is_default) {
                       <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/10 text-accent">
-                        Default
+                        {{ 'GARAGE.DEFAULT' | translate }}
                       </span>
                     }
                   </div>
@@ -127,7 +128,7 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
                    [queryParams]="{ brand: vehicle.brand, model: vehicle.model, year: vehicle.model_year, engine: vehicle.engine }"
                    class="btn-secondary text-xs px-3 py-1.5"
                    title="Find parts for this vehicle">
-                  🔍 Find Parts
+                  🔍 {{ 'GARAGE.FIND_PARTS' | translate }}
                 </a>
                 @if (!vehicle.is_default) {
                   <button (click)="setDefault(vehicle)" class="btn-secondary text-xs px-3 py-1.5" title="Set as default">

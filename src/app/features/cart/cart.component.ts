@@ -6,14 +6,15 @@ import { ToastService } from '../../core/services/toast.service';
 import { Cart, CartItem } from '../../core/models/cart.model';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent, TranslateModule],
   template: `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-8">Shopping Cart</h1>
+      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-8">{{ 'CART.TITLE' | translate }}</h1>
 
       @if (loading()) {
         <div class="space-y-4">
@@ -31,9 +32,9 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
       } @else if (!cart() || cart()!.items.length === 0) {
         <app-empty-state
           icon="🛒"
-          title="Your cart is empty"
-          description="Browse our parts catalog and add items to get started.">
-          <a routerLink="/parts" class="btn-primary mt-6">Browse Parts</a>
+          [title]="'CART.EMPTY' | translate"
+          [description]="'CART.EMPTY_DESC' | translate">
+          <a routerLink="/parts" class="btn-primary mt-6">{{ 'CART.BROWSE' | translate }}</a>
         </app-empty-state>
       } @else {
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -101,7 +102,7 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
           <!-- Order Summary -->
           <div class="lg:col-span-1">
             <div class="card p-6 sticky top-24 space-y-5">
-              <h3 class="text-lg font-semibold text-primary-100">Order Summary</h3>
+              <h3 class="text-lg font-semibold text-primary-100">{{ 'CHECKOUT.ORDER_SUMMARY' | translate }}</h3>
 
               <div class="space-y-3 text-sm">
                 <div class="flex justify-between text-primary-300">
@@ -113,13 +114,13 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
                   <span class="text-success">Free</span>
                 </div>
                 <div class="border-t border-primary-700 pt-3 flex justify-between">
-                  <span class="font-semibold text-primary-100">Total</span>
+                  <span class="font-semibold text-primary-100">{{ 'CART.TOTAL' | translate }}</span>
                   <span class="text-xl font-bold text-accent font-mono">{{ cart()!.total }} TND</span>
                 </div>
               </div>
 
               <a routerLink="/checkout" class="btn-primary w-full py-3 text-center block">
-                Proceed to Checkout
+                {{ 'CART.CHECKOUT' | translate }}
               </a>
 
               <a routerLink="/parts" class="btn-ghost w-full text-center text-sm block">

@@ -7,11 +7,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { Part, PartImage } from '../../../core/models/part.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-part-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, TranslateModule],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       @if (loading()) {
@@ -104,7 +105,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
                 {{ part()!.condition }}
               </span>
               <span [class]="part()!.is_in_stock ? 'badge-in-stock' : 'badge-out-of-stock'">
-                {{ part()!.is_in_stock ? 'In Stock (' + part()!.available_quantity + ')' : 'Out of Stock' }}
+                {{ part()!.is_in_stock ? ('PARTS.IN_STOCK' | translate) + ' (' + part()!.available_quantity + ')' : ('PARTS.OUT_OF_STOCK' | translate) }}
               </span>
             </div>
 
@@ -141,31 +142,31 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
                       <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
                       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
                     </svg>
-                    Add to Cart
+                    {{ 'PART_DETAIL.ADD_TO_CART' | translate }}
                   }
                 </button>
               </div>
             } @else if (!auth.loggedIn()) {
-              <a routerLink="/auth/login" class="btn-primary w-full text-center">Sign in to purchase</a>
+              <a routerLink="/auth/login" class="btn-primary w-full text-center">{{ 'PART_DETAIL.SIGN_IN_TO_BUY' | translate }}</a>
             }
 
             <!-- Specs -->
             <div class="card p-5 space-y-3">
-              <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">Specifications</h3>
+              <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">{{ 'PART_DETAIL.SPECS' | translate }}</h3>
               <div class="grid grid-cols-2 gap-y-3 text-sm">
-                <span class="text-primary-400">Brand</span>
+                <span class="text-primary-400">{{ 'PART_DETAIL.BRAND' | translate }}</span>
                 <span class="text-primary-100">{{ part()!.brand_name }}</span>
-                <span class="text-primary-400">Model</span>
+                <span class="text-primary-400">{{ 'PART_DETAIL.MODEL' | translate }}</span>
                 <span class="text-primary-100">{{ part()!.model_name }}</span>
-                <span class="text-primary-400">Year</span>
+                <span class="text-primary-400">{{ 'PART_DETAIL.YEAR' | translate }}</span>
                 <span class="text-primary-100">{{ part()!.model_year_value }}</span>
                 @if (part()!.engine_name) {
-                  <span class="text-primary-400">Engine</span>
+                  <span class="text-primary-400">{{ 'PART_DETAIL.ENGINE' | translate }}</span>
                   <span class="text-primary-100">{{ part()!.engine_name }}</span>
                 }
-                <span class="text-primary-400">Category</span>
+                <span class="text-primary-400">{{ 'PART_DETAIL.CATEGORY' | translate }}</span>
                 <span class="text-primary-100">{{ part()!.category_name }}</span>
-                <span class="text-primary-400">Supplier</span>
+                <span class="text-primary-400">{{ 'PART_DETAIL.SUPPLIER' | translate }}</span>
                 <span class="text-primary-100">{{ part()!.supplier_name }}</span>
               </div>
             </div>
@@ -173,7 +174,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
             <!-- Description -->
             @if (part()!.description) {
               <div>
-                <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-2">Description</h3>
+                <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-2">{{ 'PART_DETAIL.DESCRIPTION' | translate }}</h3>
                 <p class="text-sm text-primary-300 leading-relaxed whitespace-pre-line">{{ part()!.description }}</p>
               </div>
             }

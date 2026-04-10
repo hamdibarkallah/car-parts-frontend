@@ -4,11 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { OrderService } from '../../../core/services/order.service';
 import { Order } from '../../../core/models/order.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, TranslateModule],
   template: `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       @if (loading()) {
@@ -24,15 +25,15 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
       } @else if (order()) {
         <!-- Breadcrumb -->
         <nav class="flex items-center gap-2 text-sm text-primary-400 mb-6">
-          <a routerLink="/orders" class="hover:text-accent transition-colors">My Orders</a>
+          <a routerLink="/orders" class="hover:text-accent transition-colors">{{ 'ORDERS.TITLE' | translate }}</a>
           <span>/</span>
-          <span class="text-primary-200">Order #{{ order()!.id }}</span>
+          <span class="text-primary-200">{{ 'ORDERS.ORDER' | translate }} #{{ order()!.id }}</span>
         </nav>
 
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 class="text-2xl font-bold text-primary-50 tracking-tight">Order #{{ order()!.id }}</h1>
+            <h1 class="text-2xl font-bold text-primary-50 tracking-tight">{{ 'ORDERS.ORDER' | translate }} #{{ order()!.id }}</h1>
             <p class="text-sm text-primary-400 mt-1">Placed on {{ order()!.created_at | date:'fullDate' }}</p>
           </div>
           <span [ngClass]="{
@@ -48,7 +49,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Items -->
           <div class="lg:col-span-2 space-y-4">
-            <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">Items</h3>
+            <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">{{ 'ORDERS.ITEMS' | translate }}</h3>
             @for (item of order()!.items; track item.id) {
               <div class="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="space-y-1">
@@ -72,7 +73,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
           <!-- Summary -->
           <div class="lg:col-span-1">
             <div class="card p-6 sticky top-24 space-y-4">
-              <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">Summary</h3>
+              <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">{{ 'CHECKOUT.ORDER_SUMMARY' | translate }}</h3>
               <div class="space-y-3 text-sm">
                 <div class="flex justify-between text-primary-300">
                   <span>Items</span>
@@ -83,7 +84,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
                   <span class="text-success">Free</span>
                 </div>
                 <div class="border-t border-primary-700 pt-3 flex justify-between">
-                  <span class="font-semibold text-primary-100">Total</span>
+                  <span class="font-semibold text-primary-100">{{ 'CART.TOTAL' | translate }}</span>
                   <span class="text-xl font-bold text-accent font-mono">{{ order()!.total_price }} TND</span>
                 </div>
               </div>

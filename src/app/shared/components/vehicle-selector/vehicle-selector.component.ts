@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VehicleService } from '../../../core/services/vehicle.service';
 import { Brand, VehicleModel, ModelYear, Engine } from '../../../core/models/vehicle.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface VehicleSelection {
   brand?: Brand;
@@ -14,7 +15,7 @@ export interface VehicleSelection {
 @Component({
   selector: 'app-vehicle-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   template: `
     <div [class]="layout === 'horizontal' ? 'flex flex-wrap gap-3 items-end' : 'space-y-4'">
       <!-- Brand -->
@@ -25,7 +26,7 @@ export interface VehicleSelection {
             <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
             <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
           </svg>
-          Brand
+          {{ 'VEHICLE.BRAND' | translate }}
         </label>
         <select
           [ngModel]="selectedBrandId()"
@@ -33,7 +34,7 @@ export interface VehicleSelection {
           class="input text-sm"
           [disabled]="loadingBrands()">
           <option [ngValue]="null" class="bg-primary-800">
-            {{ loadingBrands() ? 'Loading...' : 'Select brand' }}
+            {{ loadingBrands() ? ('VEHICLE.LOADING' | translate) : ('VEHICLE.SELECT_BRAND' | translate) }}
           </option>
           @for (brand of brands(); track brand.id) {
             <option [ngValue]="brand.id" class="bg-primary-800">{{ brand.name }}</option>
@@ -43,14 +44,14 @@ export interface VehicleSelection {
 
       <!-- Model -->
       <div [class]="layout === 'horizontal' ? 'flex-1 min-w-[160px]' : ''">
-        <label class="label">Model</label>
+        <label class="label">{{ 'VEHICLE.MODEL' | translate }}</label>
         <select
           [ngModel]="selectedModelId()"
           (ngModelChange)="onModelChange($event)"
           class="input text-sm"
           [disabled]="!selectedBrandId() || loadingModels()">
           <option [ngValue]="null" class="bg-primary-800">
-            {{ loadingModels() ? 'Loading...' : (!selectedBrandId() ? 'Select brand first' : 'Select model') }}
+            {{ loadingModels() ? ('VEHICLE.LOADING' | translate) : (!selectedBrandId() ? ('VEHICLE.BRAND_FIRST' | translate) : ('VEHICLE.SELECT_MODEL' | translate)) }}
           </option>
           @for (model of models(); track model.id) {
             <option [ngValue]="model.id" class="bg-primary-800">{{ model.name }}</option>
@@ -60,14 +61,14 @@ export interface VehicleSelection {
 
       <!-- Year -->
       <div [class]="layout === 'horizontal' ? 'flex-1 min-w-[120px]' : ''">
-        <label class="label">Year</label>
+        <label class="label">{{ 'VEHICLE.YEAR' | translate }}</label>
         <select
           [ngModel]="selectedYearId()"
           (ngModelChange)="onYearChange($event)"
           class="input text-sm"
           [disabled]="!selectedModelId() || loadingYears()">
           <option [ngValue]="null" class="bg-primary-800">
-            {{ loadingYears() ? 'Loading...' : (!selectedModelId() ? 'Select model first' : 'Select year') }}
+            {{ loadingYears() ? ('VEHICLE.LOADING' | translate) : (!selectedModelId() ? ('VEHICLE.MODEL_FIRST' | translate) : ('VEHICLE.SELECT_YEAR' | translate)) }}
           </option>
           @for (year of years(); track year.id) {
             <option [ngValue]="year.id" class="bg-primary-800">{{ year.year }}</option>
@@ -78,14 +79,14 @@ export interface VehicleSelection {
       <!-- Engine (optional) -->
       @if (showEngine) {
         <div [class]="layout === 'horizontal' ? 'flex-1 min-w-[180px]' : ''">
-          <label class="label">Engine <span class="text-primary-500 text-xs">(optional)</span></label>
+          <label class="label">{{ 'VEHICLE.ENGINE' | translate }} <span class="text-primary-500 text-xs">{{ 'VEHICLE.ENGINE_OPTIONAL' | translate }}</span></label>
           <select
             [ngModel]="selectedEngineId()"
             (ngModelChange)="onEngineChange($event)"
             class="input text-sm"
             [disabled]="!selectedYearId() || loadingEngines()">
             <option [ngValue]="null" class="bg-primary-800">
-              {{ loadingEngines() ? 'Loading...' : (!selectedYearId() ? 'Select year first' : 'Any engine') }}
+              {{ loadingEngines() ? ('VEHICLE.LOADING' | translate) : (!selectedYearId() ? ('VEHICLE.YEAR_FIRST' | translate) : ('VEHICLE.ANY_ENGINE' | translate)) }}
             </option>
             @for (engine of engines(); track engine.id) {
               <option [ngValue]="engine.id" class="bg-primary-800">
@@ -104,7 +105,7 @@ export interface VehicleSelection {
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
           </svg>
-          Clear
+          {{ 'VEHICLE.CLEAR' | translate }}
         </button>
       }
     </div>

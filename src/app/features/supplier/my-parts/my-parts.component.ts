@@ -8,22 +8,23 @@ import { ToastService } from '../../../core/services/toast.service';
 import { Part } from '../../../core/models/part.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-parts',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, EmptyStateComponent],
+  imports: [CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, EmptyStateComponent, TranslateModule],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <nav class="flex items-center gap-2 text-sm text-primary-400 mb-2">
-            <a routerLink="/supplier" class="hover:text-accent transition-colors">Dashboard</a>
+            <a routerLink="/supplier" class="hover:text-accent transition-colors">{{ 'NAV.DASHBOARD' | translate }}</a>
             <span>/</span>
-            <span class="text-primary-200">My Parts</span>
+            <span class="text-primary-200">{{ 'SUPPLIER.MY_PARTS_TITLE' | translate }}</span>
           </nav>
-          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">My Parts</h1>
+          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">{{ 'SUPPLIER.MY_PARTS_TITLE' | translate }}</h1>
           <p class="text-sm text-primary-400 mt-1">{{ totalCount() }} parts listed</p>
         </div>
         <a routerLink="/supplier/parts/new" class="btn-primary text-sm">
@@ -31,7 +32,7 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"/><path d="M12 5v14"/>
           </svg>
-          Add New Part
+          {{ 'SUPPLIER.ADD_PART' | translate }}
         </a>
       </div>
 
@@ -61,9 +62,9 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
       } @else if (parts().length === 0) {
         <app-empty-state
           icon="🔧"
-          title="No parts yet"
-          description="Start by adding your first part listing.">
-          <a routerLink="/supplier/parts/new" class="btn-primary text-sm mt-4 inline-flex">Add Your First Part</a>
+          [title]="'SUPPLIER.NO_PARTS' | translate"
+          [description]="'SUPPLIER.NO_PARTS_DESC' | translate">
+          <a routerLink="/supplier/parts/new" class="btn-primary text-sm mt-4 inline-flex">{{ 'SUPPLIER.ADD_PART' | translate }}</a>
         </app-empty-state>
       } @else {
         <!-- Parts Table -->

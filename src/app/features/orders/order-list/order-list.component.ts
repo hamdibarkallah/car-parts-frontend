@@ -5,14 +5,15 @@ import { OrderService } from '../../../core/services/order.service';
 import { OrderListItem } from '../../../core/models/order.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent, TranslateModule],
   template: `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-8">My Orders</h1>
+      <h1 class="text-2xl font-bold text-primary-50 tracking-tight mb-8">{{ 'ORDERS.TITLE' | translate }}</h1>
 
       @if (loading()) {
         <div class="space-y-4">
@@ -29,9 +30,9 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
       } @else if (orders().length === 0) {
         <app-empty-state
           icon="📋"
-          title="No orders yet"
-          description="Your order history will appear here after you place your first order.">
-          <a routerLink="/parts" class="btn-primary mt-6">Browse Parts</a>
+          [title]="'ORDERS.NO_ORDERS' | translate"
+          [description]="'ORDERS.NO_ORDERS_DESC' | translate">
+          <a routerLink="/parts" class="btn-primary mt-6">{{ 'HOME.BROWSE_PARTS' | translate }}</a>
         </app-empty-state>
       } @else {
         <div class="space-y-4">
@@ -40,7 +41,7 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
                class="card-hover p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 block">
               <div class="space-y-1">
                 <div class="flex items-center gap-3">
-                  <span class="font-semibold text-primary-100">Order #{{ order.id }}</span>
+                  <span class="font-semibold text-primary-100">{{ 'ORDERS.ORDER' | translate }} #{{ order.id }}</span>
                   <span [ngClass]="{
                     'badge-pending': order.status === 'PENDING',
                     'badge-paid': order.status === 'PAID',

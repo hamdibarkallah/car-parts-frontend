@@ -4,18 +4,19 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { PartsService } from '../../../core/services/parts.service';
 import { Part } from '../../../core/models/part.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-supplier-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">Supplier Dashboard</h1>
-          <p class="text-sm text-primary-400 mt-1">Welcome back, {{ auth.user()?.first_name }}</p>
+          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">{{ 'SUPPLIER.DASHBOARD' | translate }}</h1>
+          <p class="text-sm text-primary-400 mt-1">{{ 'SUPPLIER.WELCOME' | translate }} {{ auth.user()?.first_name }}</p>
         </div>
         <div class="flex gap-3">
           <a routerLink="/supplier/parts/new" class="btn-primary text-sm">
@@ -23,7 +24,7 @@ import { Part } from '../../../core/models/part.model';
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/><path d="M12 5v14"/>
             </svg>
-            Add Part
+            {{ 'SUPPLIER.ADD_PART' | translate }}
           </a>
           <a routerLink="/parts" class="btn-secondary text-sm">View Marketplace</a>
         </div>
@@ -34,17 +35,17 @@ import { Part } from '../../../core/models/part.model';
         <div class="card p-5">
           <span class="text-2xl mb-2 block">🔧</span>
           <p class="text-2xl font-bold text-primary-50 font-mono">{{ totalParts() }}</p>
-          <p class="text-sm text-primary-400 mt-1">Total Parts Listed</p>
+          <p class="text-sm text-primary-400 mt-1">{{ 'SUPPLIER.TOTAL_PARTS' | translate }}</p>
         </div>
         <div class="card p-5">
           <span class="text-2xl mb-2 block">✅</span>
           <p class="text-2xl font-bold text-success font-mono">{{ inStockCount() }}</p>
-          <p class="text-sm text-primary-400 mt-1">In Stock</p>
+          <p class="text-sm text-primary-400 mt-1">{{ 'SUPPLIER.IN_STOCK' | translate }}</p>
         </div>
         <div class="card p-5">
           <span class="text-2xl mb-2 block">⚠️</span>
           <p class="text-2xl font-bold text-warning font-mono">{{ outOfStockCount() }}</p>
-          <p class="text-sm text-primary-400 mt-1">Out of Stock</p>
+          <p class="text-sm text-primary-400 mt-1">{{ 'SUPPLIER.OUT_OF_STOCK' | translate }}</p>
         </div>
       </div>
 
@@ -82,8 +83,8 @@ import { Part } from '../../../core/models/part.model';
       <!-- Recent Parts -->
       @if (recentParts().length > 0) {
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-primary-100">Recent Parts</h2>
-          <a routerLink="/supplier/parts" class="text-sm text-accent hover:text-accent-400 transition-colors">View all →</a>
+          <h2 class="text-lg font-semibold text-primary-100">{{ 'SUPPLIER.RECENT_PARTS' | translate }}</h2>
+          <a routerLink="/supplier/parts" class="text-sm text-accent hover:text-accent-400 transition-colors">{{ 'SUPPLIER.VIEW_ALL' | translate }} →</a>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           @for (part of recentParts(); track part.id) {
@@ -104,7 +105,7 @@ import { Part } from '../../../core/models/part.model';
                   <div class="flex items-center gap-2 mt-1">
                     <span class="text-sm font-bold text-accent font-mono">{{ part.price }} TND</span>
                     <span [class]="part.is_in_stock ? 'badge-in-stock' : 'badge-out-of-stock'" class="text-[10px]">
-                      {{ part.is_in_stock ? 'In Stock' : 'Out' }}
+                      {{ part.is_in_stock ? ('SUPPLIER.IN_STOCK' | translate) : ('SUPPLIER.OUT_OF_STOCK' | translate) }}
                     </span>
                   </div>
                 </div>

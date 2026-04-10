@@ -9,18 +9,19 @@ import { Category } from '../../../core/models/category.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/components/vehicle-selector/vehicle-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-parts-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, EmptyStateComponent, VehicleSelectorComponent],
+  imports: [CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, EmptyStateComponent, VehicleSelectorComponent, TranslateModule],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">Parts Catalog</h1>
-          <p class="text-sm text-primary-400 mt-1">{{ totalCount() }} parts available</p>
+          <h1 class="text-2xl font-bold text-primary-50 tracking-tight">{{ 'PARTS.CATALOG' | translate }}</h1>
+          <p class="text-sm text-primary-400 mt-1">{{ totalCount() }} {{ 'PARTS.AVAILABLE' | translate }}</p>
         </div>
         <!-- Search -->
         <div class="relative w-full sm:w-80">
@@ -33,13 +34,13 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
             [(ngModel)]="searchQuery"
             (ngModelChange)="onSearchChange()"
             class="input pl-10"
-            placeholder="Search by name, reference..." />
+            [placeholder]="'PARTS.SEARCH_PLACEHOLDER' | translate" />
         </div>
       </div>
 
       <!-- Vehicle Selector -->
       <div class="card p-5 mb-6">
-        <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-3">Find parts for your vehicle</h3>
+        <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider mb-3">{{ 'PARTS.FIND_FOR_VEHICLE' | translate }}</h3>
         <app-vehicle-selector
           layout="horizontal"
           [showEngine]="true"
@@ -50,7 +51,7 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
       <!-- Active Filters Tags -->
       @if (activeFilterCount() > 0) {
         <div class="flex items-center gap-2 mb-6 flex-wrap">
-          <span class="text-xs text-primary-400">Active filters:</span>
+          <span class="text-xs text-primary-400">{{ 'PARTS.ACTIVE_FILTERS' | translate }}</span>
           @if (filters.condition) {
             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
               {{ filters.condition }}
@@ -71,17 +72,17 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
           }
           @if (stockFilter) {
             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-success/10 text-success text-xs font-medium">
-              In stock
+              {{ 'PARTS.IN_STOCK' | translate }}
               <button (click)="stockFilter = false; loadParts()" class="hover:text-white ml-0.5">&times;</button>
             </span>
           }
           @if (filters.brand) {
             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
-              Vehicle filter active
+              {{ 'PARTS.VEHICLE_FILTER' | translate }}
             </span>
           }
           <button (click)="clearFilters()" class="text-xs text-primary-400 hover:text-primary-200 transition-colors ml-1">
-            Clear all
+            {{ 'PARTS.CLEAR_ALL' | translate }}
           </button>
         </div>
       }
@@ -90,13 +91,13 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
         <!-- Filters Sidebar -->
         <aside class="w-full lg:w-64 shrink-0">
           <div class="card p-5 space-y-5 sticky top-24">
-            <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">Filters</h3>
+            <h3 class="text-sm font-semibold text-primary-200 uppercase tracking-wider">{{ 'PARTS.FILTERS' | translate }}</h3>
 
             <!-- Category -->
             <div>
-              <label class="label">Category</label>
+              <label class="label">{{ 'PARTS.CATEGORY' | translate }}</label>
               <select [(ngModel)]="filters.category" (ngModelChange)="onCategoryChange()" class="input text-sm">
-                <option [ngValue]="undefined" class="bg-primary-800">All Categories</option>
+                <option [ngValue]="undefined" class="bg-primary-800">{{ 'PARTS.ALL_CATEGORIES' | translate }}</option>
                 @for (cat of categories(); track cat.id) {
                   <option [ngValue]="cat.id" class="bg-primary-800">{{ cat.name }}</option>
                 }
@@ -105,29 +106,29 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
 
             <!-- Condition -->
             <div>
-              <label class="label">Condition</label>
+              <label class="label">{{ 'PARTS.CONDITION' | translate }}</label>
               <div class="flex gap-2">
                 <button (click)="filters.condition = undefined; currentPage = 1; loadParts()"
                         class="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                         [class]="!filters.condition ? 'bg-accent text-white' : 'bg-primary-800 text-primary-300 hover:bg-primary-700'">
-                  All
+                  {{ 'PARTS.ALL' | translate }}
                 </button>
                 <button (click)="filters.condition = 'NEW'; currentPage = 1; loadParts()"
                         class="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                         [class]="filters.condition === 'NEW' ? 'bg-accent text-white' : 'bg-primary-800 text-primary-300 hover:bg-primary-700'">
-                  New
+                  {{ 'PARTS.NEW' | translate }}
                 </button>
                 <button (click)="filters.condition = 'USED'; currentPage = 1; loadParts()"
                         class="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                         [class]="filters.condition === 'USED' ? 'bg-accent text-white' : 'bg-primary-800 text-primary-300 hover:bg-primary-700'">
-                  Used
+                  {{ 'PARTS.USED' | translate }}
                 </button>
               </div>
             </div>
 
             <!-- Price Range -->
             <div>
-              <label class="label">Price Range (TND)</label>
+              <label class="label">{{ 'PARTS.PRICE_RANGE' | translate }}</label>
               <div class="flex items-center gap-2">
                 <input type="number" [(ngModel)]="priceMin" (change)="onPriceChange()"
                        class="input text-sm w-full" placeholder="Min" min="0" />
@@ -142,14 +143,14 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
               <label class="flex items-center gap-2.5 cursor-pointer">
                 <input type="checkbox" [(ngModel)]="stockFilter" (ngModelChange)="loadParts()"
                        class="w-4 h-4 rounded bg-primary-700 border-primary-600 text-accent focus:ring-accent/50" />
-                <span class="text-sm text-primary-300">In stock only</span>
+                <span class="text-sm text-primary-300">{{ 'PARTS.IN_STOCK_ONLY' | translate }}</span>
               </label>
             </div>
 
             <!-- Clear -->
             @if (activeFilterCount() > 0) {
               <button (click)="clearFilters()" class="btn-ghost text-xs w-full">
-                Clear All Filters
+                {{ 'PARTS.CLEAR_FILTERS' | translate }}
               </button>
             }
           </div>
@@ -171,8 +172,8 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
           } @else if (parts().length === 0) {
             <app-empty-state
               icon="🔧"
-              title="No parts found"
-              description="Try adjusting your filters or search terms.">
+              [title]="'PARTS.NO_PARTS' | translate"
+              [description]="'PARTS.NO_PARTS_DESC' | translate">
             </app-empty-state>
           } @else {
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -201,7 +202,7 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
                         {{ part.condition }}
                       </span>
                       <span [class]="part.is_in_stock ? 'badge-in-stock' : 'badge-out-of-stock'">
-                        {{ part.is_in_stock ? 'In Stock' : 'Out of Stock' }}
+                        {{ part.is_in_stock ? ('PARTS.IN_STOCK' | translate) : ('PARTS.OUT_OF_STOCK' | translate) }}
                       </span>
                     </div>
 

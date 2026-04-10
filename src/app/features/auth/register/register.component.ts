@@ -5,17 +5,18 @@ import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent, TranslateModule],
   template: `
     <div class="w-full max-w-lg animate-fade-in">
       <!-- Header -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-primary-50 tracking-tight">Create an account</h1>
-        <p class="mt-2 text-primary-400">Join Tunisia's car parts marketplace</p>
+        <h1 class="text-3xl font-bold text-primary-50 tracking-tight">{{ 'AUTH.REGISTER_TITLE' | translate }}</h1>
+        <p class="mt-2 text-primary-400">{{ 'HOME.BADGE' | translate }}</p>
       </div>
 
       <!-- Form Card -->
@@ -29,7 +30,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
             [class]="selectedRole() === 'CLIENT'
               ? 'bg-accent text-white shadow-md'
               : 'text-primary-400 hover:text-primary-200'">
-            Client
+            {{ 'AUTH.CLIENT' | translate }}
           </button>
           <button
             type="button"
@@ -38,7 +39,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
             [class]="selectedRole() === 'SUPPLIER'
               ? 'bg-accent text-white shadow-md'
               : 'text-primary-400 hover:text-primary-200'">
-            Supplier
+            {{ 'AUTH.SUPPLIER_ROLE' | translate }}
           </button>
         </div>
 
@@ -46,7 +47,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
           <!-- Name Row -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="first_name" class="label">First Name</label>
+              <label for="first_name" class="label">{{ 'AUTH.FIRST_NAME' | translate }}</label>
               <input id="first_name" type="text" formControlName="first_name" class="input"
                      [class.input-error]="isFieldInvalid('first_name')" placeholder="John" />
               @if (isFieldInvalid('first_name')) {
@@ -54,7 +55,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
               }
             </div>
             <div>
-              <label for="last_name" class="label">Last Name</label>
+              <label for="last_name" class="label">{{ 'AUTH.LAST_NAME' | translate }}</label>
               <input id="last_name" type="text" formControlName="last_name" class="input"
                      [class.input-error]="isFieldInvalid('last_name')" placeholder="Doe" />
               @if (isFieldInvalid('last_name')) {
@@ -65,7 +66,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 
           <!-- Username -->
           <div>
-            <label for="username" class="label">Username</label>
+            <label for="username" class="label">{{ 'AUTH.USERNAME' | translate }}</label>
             <input id="username" type="text" formControlName="username" class="input"
                    [class.input-error]="isFieldInvalid('username')" placeholder="johndoe" autocomplete="username" />
             @if (isFieldInvalid('username')) {
@@ -75,7 +76,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 
           <!-- Email -->
           <div>
-            <label for="email" class="label">Email</label>
+            <label for="email" class="label">{{ 'AUTH.EMAIL' | translate }}</label>
             <input id="email" type="email" formControlName="email" class="input"
                    [class.input-error]="isFieldInvalid('email')" placeholder="john&#64;example.com" />
             @if (isFieldInvalid('email')) {
@@ -95,7 +96,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 
           <!-- Password -->
           <div>
-            <label for="password" class="label">Password</label>
+            <label for="password" class="label">{{ 'AUTH.PASSWORD' | translate }}</label>
             <div class="relative">
               <input id="password" [type]="showPassword() ? 'text' : 'password'"
                      formControlName="password" class="input pr-10"
@@ -139,7 +140,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 
           <!-- Confirm Password -->
           <div>
-            <label for="password2" class="label">Confirm Password</label>
+            <label for="password2" class="label">{{ 'AUTH.CONFIRM_PASSWORD' | translate }}</label>
             <input id="password2" [type]="showPassword() ? 'text' : 'password'"
                    formControlName="password2" class="input"
                    [class.input-error]="isFieldInvalid('password2')" placeholder="Re-enter your password"
@@ -212,9 +213,9 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
           <button type="submit" [disabled]="loading()" class="btn-primary w-full py-3 mt-2">
             @if (loading()) {
               <app-loading-spinner size="sm" />
-              <span>Creating account...</span>
+              <span>{{ 'AUTH.REGISTER_BTN' | translate }}...</span>
             } @else {
-              <span>Create Account</span>
+              <span>{{ 'AUTH.REGISTER_BTN' | translate }}</span>
             }
           </button>
         </form>
@@ -222,9 +223,9 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
         <!-- Divider -->
         <div class="mt-6 pt-6 border-t border-primary-700 text-center">
           <p class="text-sm text-primary-400">
-            Already have an account?
+            {{ 'AUTH.HAS_ACCOUNT' | translate }}
             <a routerLink="/auth/login" class="text-accent hover:text-accent-400 font-medium transition-colors">
-              Sign in
+              {{ 'NAV.SIGN_IN' | translate }}
             </a>
           </p>
         </div>
