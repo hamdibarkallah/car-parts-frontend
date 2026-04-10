@@ -15,7 +15,7 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, EmptyStateComponent, VehicleSelectorComponent],
   template: `
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
@@ -177,7 +177,8 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
           } @else {
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               @for (part of parts(); track part.id) {
-                <a [routerLink]="['/parts', part.id]" class="card-hover p-4 group block">
+                <a [routerLink]="['/parts', part.id]" class="card-hover hover-glow p-4 group block animate-slide-up"
+                   [style.animation-delay.ms]="$index * 50">
                   <!-- Image -->
                   <div class="aspect-[4/3] rounded-lg bg-primary-700 mb-4 overflow-hidden flex items-center justify-center">
                     @if (part.primary_image) {

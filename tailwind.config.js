@@ -57,10 +57,14 @@ module.exports = {
         mono: ['JetBrains Mono', 'monospace'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.3s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'slide-down': 'slideDown 0.3s ease-out',
-        'scale-in': 'scaleIn 0.2s ease-out',
+        'fade-in': 'fadeIn 0.3s ease-out forwards',
+        'fade-in-slow': 'fadeIn 0.5s ease-out forwards',
+        'slide-up': 'slideUp 0.3s ease-out forwards',
+        'slide-up-slow': 'slideUp 0.5s ease-out forwards',
+        'slide-down': 'slideDown 0.3s ease-out forwards',
+        'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+        'scale-in': 'scaleIn 0.2s ease-out forwards',
+        'bounce-in': 'bounceIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
       },
       keyframes: {
         fadeIn: {
@@ -78,6 +82,16 @@ module.exports = {
         scaleIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        bounceIn: {
+          '0%': { opacity: '0', transform: 'scale(0.3)' },
+          '50%': { opacity: '1', transform: 'scale(1.05)' },
+          '70%': { transform: 'scale(0.95)' },
+          '100%': { transform: 'scale(1)' },
         },
       },
     },

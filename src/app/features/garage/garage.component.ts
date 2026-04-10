@@ -14,7 +14,7 @@ import { VehicleSelection } from '../../shared/components/vehicle-selector/vehic
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, VehicleSelectorComponent, LoadingSpinnerComponent, EmptyStateComponent],
   template: `
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div class="flex items-center justify-between mb-8">
         <div>
           <h1 class="text-2xl font-bold text-primary-50 tracking-tight">My Garage</h1>
