@@ -63,6 +63,12 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
               <button (click)="filters.category = undefined; selectedCategoryName.set(''); loadParts()" class="hover:text-white ml-0.5">&times;</button>
             </span>
           }
+          @if (priceMin || priceMax) {
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
+              {{ priceMin || 0 }} – {{ priceMax || '∞' }} TND
+              <button (click)="priceMin = null; priceMax = null; onPriceChange()" class="hover:text-white ml-0.5">&times;</button>
+            </span>
+          }
           @if (stockFilter) {
             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-success/10 text-success text-xs font-medium">
               In stock
@@ -100,11 +106,35 @@ import { VehicleSelectorComponent, VehicleSelection } from '../../../shared/comp
             <!-- Condition -->
             <div>
               <label class="label">Condition</label>
-              <select [(ngModel)]="filters.condition" (ngModelChange)="loadParts()" class="input text-sm">
-                <option [ngValue]="undefined" class="bg-primary-800">All</option>
-                <option value="NEW" class="bg-primary-800">New</option>
-                <option value="USED" class="bg-primary-800">Used</option>
-              </select>
+              <div class="flex gap-2">
+                <button (click)="filters.condition = undefined; currentPage = 1; loadParts()"
+                        class="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                        [class]="!filters.condition ? 'bg-accent text-white' : 'bg-primary-800 text-primary-300 hover:bg-primary-700'">
+                  All
+                </button>
+                <button (click)="filters.condition = 'NEW'; currentPage = 1; loadParts()"
+                        class="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                        [class]="filters.condition === 'NEW' ? 'bg-accent text-white' : 'bg-primary-800 text-primary-300 hover:bg-primary-700'">
+                  New
+                </button>
+                <button (click)="filters.condition = 'USED'; currentPage = 1; loadParts()"
+                        class="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                        [class]="filters.condition === 'USED' ? 'bg-accent text-white' : 'bg-primary-800 text-primary-300 hover:bg-primary-700'">
+                  Used
+                </button>
+              </div>
+            </div>
+
+            <!-- Price Range -->
+            <div>
+              <label class="label">Price Range (TND)</label>
+              <div class="flex items-center gap-2">
+                <input type="number" [(ngModel)]="priceMin" (change)="onPriceChange()"
+                       class="input text-sm w-full" placeholder="Min" min="0" />
+                <span class="text-primary-500 text-sm">–</span>
+                <input type="number" [(ngModel)]="priceMax" (change)="onPriceChange()"
+                       class="input text-sm w-full" placeholder="Max" min="0" />
+              </div>
             </div>
 
             <!-- In Stock -->
@@ -245,10 +275,13 @@ export class PartsListComponent implements OnInit {
   selectedCategoryName = signal('');
   searchQuery = '';
   stockFilter = false;
+  priceMin: number | null = null;
+  priceMax: number | null = null;
   currentPage = 1;
   pageSize = 12;
   filters: PartFilters = {};
   private searchTimeout: any;
+  private priceTimeout: any;
 
   constructor(
     private partsService: PartsService,
@@ -271,6 +304,8 @@ export class PartsListComponent implements OnInit {
     const filters: PartFilters = { ...this.filters, page: this.currentPage };
     if (this.searchQuery) filters.search = this.searchQuery;
     if (this.stockFilter) filters.in_stock = true;
+    if (this.priceMin) filters.price_min = this.priceMin;
+    if (this.priceMax) filters.price_max = this.priceMax;
 
     this.partsService.getParts(filters).subscribe({
       next: (res) => {
@@ -307,12 +342,21 @@ export class PartsListComponent implements OnInit {
     this.loadParts();
   }
 
+  onPriceChange(): void {
+    clearTimeout(this.priceTimeout);
+    this.priceTimeout = setTimeout(() => {
+      this.currentPage = 1;
+      this.loadParts();
+    }, 500);
+  }
+
   activeFilterCount(): number {
     let count = 0;
     if (this.filters.condition) count++;
     if (this.filters.category) count++;
     if (this.stockFilter) count++;
     if (this.filters.brand) count++;
+    if (this.priceMin || this.priceMax) count++;
     return count;
   }
 
@@ -344,6 +388,8 @@ export class PartsListComponent implements OnInit {
     this.filters = {};
     this.searchQuery = '';
     this.stockFilter = false;
+    this.priceMin = null;
+    this.priceMax = null;
     this.currentPage = 1;
     this.selectedCategoryName.set('');
     this.loadParts();

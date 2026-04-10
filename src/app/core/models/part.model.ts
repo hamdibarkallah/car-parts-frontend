@@ -46,4 +46,6 @@ export interface PartFilters {
   in_stock?: boolean;
   search?: string;
   page?: number;
+  price_min?: number;
+  price_max?: number;
 }
