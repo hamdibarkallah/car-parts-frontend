@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { FloatingCartComponent } from '../../shared/components/floating-cart/floating-cart.component';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, FloatingCartComponent],
   template: `
     <div class="min-h-screen flex flex-col">
       <app-navbar />
@@ -14,6 +15,7 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
         <router-outlet />
       </main>
       <app-footer />
+      <app-floating-cart />
     </div>
   `
 })

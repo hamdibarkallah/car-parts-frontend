@@ -29,6 +29,8 @@
     "STEP2_DESC": "Recherchez parmi des milliers de pièces de plusieurs fournisseurs. Comparez les prix et les états.",
     "STEP3_TITLE": "Commander & Recevoir",
     "STEP3_DESC": "Ajoutez au panier, passez votre commande et recevez vos pièces de fournisseurs vérifiés.",
+    "SCROLL": "Défiler",
+    "CTA_LABEL": "Commencer",
     "CTA_TITLE": "Prêt à trouver vos pièces ?",
     "CTA_DESC": "Rejoignez des milliers de propriétaires de voitures tunisiens qui trouvent des pièces de qualité aux meilleurs prix.",
     "START_SHOPPING": "Commencer les Achats",
@@ -168,6 +170,9 @@
     "YEAR_FIRST": "Sélectionnez d'abord l'année",
     "LOADING": "Chargement...",
     "CLEAR": "Effacer"
+  },
+  "MINI_CART": {
+    "VIEW_CART": "Voir le Panier"
   },
   "COMMON": {
     "LOADING": "Chargement...",

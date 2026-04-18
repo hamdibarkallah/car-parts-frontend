@@ -29,6 +29,8 @@
     "STEP2_DESC": "Search through thousands of parts from multiple suppliers. Compare prices and conditions.",
     "STEP3_TITLE": "Order & Receive",
     "STEP3_DESC": "Add to cart, place your order, and receive your parts from verified suppliers.",
+    "SCROLL": "Scroll",
+    "CTA_LABEL": "Get Started",
     "CTA_TITLE": "Ready to find your parts?",
     "CTA_DESC": "Join thousands of Tunisian car owners who find quality spare parts at the best prices.",
     "START_SHOPPING": "Start Shopping",
@@ -168,6 +170,9 @@
     "YEAR_FIRST": "Select year first",
     "LOADING": "Loading...",
     "CLEAR": "Clear"
+  },
+  "MINI_CART": {
+    "VIEW_CART": "View Cart"
   },
   "COMMON": {
     "LOADING": "Loading...",

@@ -55,6 +55,7 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        display: ['Bebas Neue', 'Impact', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out forwards',
