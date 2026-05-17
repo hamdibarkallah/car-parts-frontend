@@ -87,7 +87,12 @@ export const routes: Routes = [
       {
         path: 'supplier/orders',
         canActivate: [supplierGuard],
-        loadComponent: () => import('./features/supplier/supplier-orders/supplier-orders.component').then(m => m.SupplierOrdersComponent)
+        loadComponent: () => import('./features/supplier/orders/supplier-orders-perfect.component').then(m => m.SupplierOrdersPerfectComponent)
+      },
+      {
+        path: 'supplier/orders/:id',
+        canActivate: [supplierGuard],
+        loadComponent: () => import('./features/supplier/orders/order-detail-perfect.component').then(m => m.OrderDetailPerfectComponent)
       }
     ]
   },

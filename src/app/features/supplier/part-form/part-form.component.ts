@@ -157,7 +157,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
                 <polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
               </svg>
               <p class="text-sm text-primary-300">Drag & drop images or <span class="text-accent">browse</span></p>
-              <p class="text-xs text-primary-500 mt-1">PNG, JPG up to 5MB each</p>
+              <p class="text-xs text-primary-500 mt-1">PNG, JPG, JPEG, WEBP, GIF, BMP, TIFF, ICO up to 5MB each</p>
             </div>
 
             <!-- Selected files preview -->
